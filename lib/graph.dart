@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/gestures.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class BarChartSample1 extends StatefulWidget {
   final List<Color> availableColors = [
@@ -25,76 +26,10 @@ class BarChartSample1State extends State<BarChartSample1> {
   int touchedIndex = -1;
 
   bool isPlaying = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: 1,
-      child: Card(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
-        color: const Color(0xff81e5cd),
-        child: Stack(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisAlignment: MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.max,
-                children: <Widget>[
-                  Text(
-                    'Weekly graph',
-                    style: TextStyle(
-                        color: const Color(0xff0f4a3c),
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(
-                    height: 4,
-                  ),
-                  const SizedBox(
-                    height: 38,
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: BarChart(
-                        isPlaying ? randomData() : mainBarData(),
-                        swapAnimationDuration: animDuration,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Align(
-                alignment: Alignment.topRight,
-                child: IconButton(
-                  icon: Icon(
-                    isPlaying ? Icons.pause : Icons.play_arrow,
-                    color: const Color(0xff0f4a3c),
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      isPlaying = !isPlaying;
-                      if (isPlaying) {
-                        refreshState();
-                      }
-                    });
-                  },
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
+  List<String> vaa = [];
+  String weekScore = "";
+  List<int> days = [];
+  List<double> scores = [];
 
   BarChartGroupData makeGroupData(
     int x,
@@ -113,7 +48,7 @@ class BarChartSample1State extends State<BarChartSample1> {
           width: width,
           backDrawRodData: BackgroundBarChartRodData(
             show: true,
-            y: 20,
+            y: 10,
             colors: [barBackgroundColor],
           ),
         ),
@@ -122,26 +57,77 @@ class BarChartSample1State extends State<BarChartSample1> {
     );
   }
 
-  List<BarChartGroupData> showingGroups() => List.generate(7, (i) {
-        switch (i) {
-          case 0:
-            return makeGroupData(0, 5, isTouched: i == touchedIndex);
-          case 1:
-            return makeGroupData(1, 6.5, isTouched: i == touchedIndex);
-          case 2:
-            return makeGroupData(2, 5, isTouched: i == touchedIndex);
-          case 3:
-            return makeGroupData(3, 7.5, isTouched: i == touchedIndex);
-          case 4:
-            return makeGroupData(4, 9, isTouched: i == touchedIndex);
-          case 5:
-            return makeGroupData(5, 11.5, isTouched: i == touchedIndex);
-          case 6:
-            return makeGroupData(6, 6.5, isTouched: i == touchedIndex);
-          default:
-            return throw Error();
-        }
-      });
+  var dayMap = {
+    "Monday": 0,
+    "Tuesday": 1,
+    "Wednesday": 2,
+    "Thursaday": 3,
+    "Friday": 4,
+    "Sataurday": 5,
+    "Sunday": 6
+  };
+  double getDayScore(List<String> a) {
+    return ((0.75 * int.parse(a[0])) +
+            (0.50 * int.parse(a[1])) +
+            (0.25 * int.parse(a[2])) +
+            (3 * int.parse(a[3])) +
+            (1 * int.parse(a[4])) +
+            (1.5 * int.parse(a[5])) +
+            (1 * int.parse(a[6])) +
+            (1.5 * int.parse(a[7])) +
+            (0.50 * int.parse(a[8]))) /
+        10;
+  }
+
+  double roundDouble(double value, int places) {
+    double mod = pow(10.0, places).toDouble();
+    return ((value * mod).round().toDouble() / mod);
+  }
+
+  Future<String> read7day() async {
+    final prefs = await SharedPreferences.getInstance();
+    String cur = "";
+    var curDate = DateTime.now();
+
+    int count = 0;
+    double curScore = 0;
+    for (int i = 6; i >= 0; i--) {
+      var prev = DateTime.now().subtract(Duration(days: i));
+      cur = (prev.year).toString() +
+          "-" +
+          (prev.month).toString() +
+          "-" +
+          (prev.day).toString();
+      var key = cur;
+      int day = prev.weekday;
+      days.add(day - 1);
+      vaa = prefs.getStringList(key) ?? ["0"];
+      //print(vaa);
+      if (vaa.length == 1) {
+        scores.add(0);
+      } else {
+        count++;
+        curScore = curScore + getDayScore(vaa);
+        scores.add(getDayScore(vaa));
+      }
+    }
+    //print(scores);
+    double totalScore = curScore / count;
+    totalScore = roundDouble(totalScore, 2);
+    weekScore = totalScore.toString();
+
+    return Future.value(weekScore);
+    //print(score);
+  }
+
+  List<BarChartGroupData> showingGroups() {
+    List<BarChartGroupData> ans = [];
+    //read7day();
+    for (int i = 0; i < 7; i++) {
+      ans.add(makeGroupData(days[i], scores[i], isTouched: i == touchedIndex));
+    }
+    return ans;
+  }
 
   BarChartData mainBarData() {
     return BarChartData(
@@ -194,17 +180,7 @@ class BarChartSample1State extends State<BarChartSample1> {
                 ],
               );
             }),
-        touchCallback: (barTouchResponse) {
-          setState(() {
-            if (barTouchResponse.spot != null &&
-                barTouchResponse.touchInput is! PointerUpEvent &&
-                barTouchResponse.touchInput is! PointerExitEvent) {
-              touchedIndex = barTouchResponse.spot.touchedBarGroupIndex;
-            } else {
-              touchedIndex = -1;
-            }
-          });
-        },
+        touchCallback: null,
       ),
       titlesData: FlTitlesData(
         show: true,
@@ -245,94 +221,71 @@ class BarChartSample1State extends State<BarChartSample1> {
     );
   }
 
-  BarChartData randomData() {
-    return BarChartData(
-      barTouchData: BarTouchData(
-        enabled: false,
-      ),
-      titlesData: FlTitlesData(
-        show: true,
-        bottomTitles: SideTitles(
-          showTitles: true,
-          getTextStyles: (value) => const TextStyle(
-              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
-          margin: 16,
-          getTitles: (double value) {
-            switch (value.toInt()) {
-              case 0:
-                return 'M';
-              case 1:
-                return 'T';
-              case 2:
-                return 'W';
-              case 3:
-                return 'T';
-              case 4:
-                return 'F';
-              case 5:
-                return 'S';
-              case 6:
-                return 'S';
-              default:
-                return '';
-            }
-          },
-        ),
-        leftTitles: SideTitles(
-          showTitles: false,
-        ),
-      ),
-      borderData: FlBorderData(
-        show: false,
-      ),
-      barGroups: List.generate(7, (i) {
-        switch (i) {
-          case 0:
-            {
-              return makeGroupData(0, Random().nextInt(15).toDouble() + 6,
-                  barColor: widget.availableColors[
-                      Random().nextInt(widget.availableColors.length)]);
-            }
-          case 1:
-            {
-              return makeGroupData(1, Random().nextInt(15).toDouble() + 6,
-                  barColor: widget.availableColors[
-                      Random().nextInt(widget.availableColors.length)]);
-            }
-
-          case 2:
-            return makeGroupData(2, Random().nextInt(15).toDouble() + 6,
-                barColor: widget.availableColors[
-                    Random().nextInt(widget.availableColors.length)]);
-          case 3:
-            return makeGroupData(3, Random().nextInt(15).toDouble() + 6,
-                barColor: widget.availableColors[
-                    Random().nextInt(widget.availableColors.length)]);
-          case 4:
-            return makeGroupData(4, Random().nextInt(15).toDouble() + 6,
-                barColor: widget.availableColors[
-                    Random().nextInt(widget.availableColors.length)]);
-          case 5:
-            return makeGroupData(5, Random().nextInt(15).toDouble() + 6,
-                barColor: widget.availableColors[
-                    Random().nextInt(widget.availableColors.length)]);
-          case 6:
-            return makeGroupData(6, Random().nextInt(15).toDouble() + 6,
-                barColor: widget.availableColors[
-                    Random().nextInt(widget.availableColors.length)]);
-          default:
-            return throw Error();
-        }
-      }),
-    );
-  }
-
-  Future<dynamic> refreshState() async {
-    setState(() {});
-    await Future<dynamic>.delayed(
-        animDuration + const Duration(milliseconds: 50));
-    if (isPlaying) {
-      await refreshState();
-    }
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        child: FutureBuilder<String>(
+            future: read7day(),
+            builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                return AspectRatio(
+                  aspectRatio: 1,
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18)),
+                    color: const Color(0xff81e5cd),
+                    child: Stack(
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.max,
+                            children: <Widget>[
+                              Text(
+                                'Weekly graph',
+                                style: TextStyle(
+                                    color: const Color(0xff0f4a3c),
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              const SizedBox(
+                                height: 4,
+                              ),
+                              const SizedBox(
+                                height: 38,
+                              ),
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0),
+                                  child: BarChart(
+                                    mainBarData(),
+                                    swapAnimationDuration: animDuration,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 12,
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Align(
+                            alignment: Alignment.topRight,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                );
+              } else if (snapshot.connectionState == ConnectionState.waiting) {
+                return Text("Wating...");
+              }
+              throw 'TODO';
+            }));
   }
 }

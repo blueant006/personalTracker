@@ -12,7 +12,7 @@ class Option extends StatelessWidget {
           style: TextStyle(fontSize: 20),
           textAlign: TextAlign.center,
         ),
-        onPressed: x,
+        onPressed: x(),
         color: Colors.amber,
       ),
     );

@@ -1,33 +1,78 @@
 import 'package:flutter/material.dart';
-import 'section.dart';
-import 'option.dart';
-import 'result.dart';
+import 'package:my_first_app/Dashboard.dart';
 import 'Dashboard.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
-  runApp(MaterialApp(
-    title: 'Personal Tracker',
-    home: MainPage(),
-  ));
-}
+void main() => runApp(MyApp());
 
-class MainPage extends StatefulWidget {
+/// This is the main application widget.
+class MyApp extends StatelessWidget {
+  MyApp({
+    Key key,
+  }) : super(key: key);
+
+  static const String _title = 'Flutter Code Sample';
+
   @override
-  State<StatefulWidget> createState() {
-    // TODO: implement createState
-    return _MainPageState();
-    throw UnimplementedError();
+  Widget build(BuildContext context) {
+    return const MaterialApp(
+      title: _title,
+      home: MyStatefulWidget(),
+    );
   }
 }
 
-class _MainPageState extends State<MainPage> {
+class MyStatefulWidget extends StatefulWidget {
+  const MyStatefulWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  State<MyStatefulWidget> createState() => _MyStatefulWidgetState();
+}
+
+/// This is the private State class that goes with MyStatefulWidget.
+class _MyStatefulWidgetState extends State<MyStatefulWidget> {
+  int _selectedIndex = 0;
+  static const TextStyle optionStyle =
+      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  List<Widget> _widgetOptions = <Widget>[
+    Dashboard(),
+    Text(
+      'Index 1: Take Survey',
+      style: optionStyle,
+    ),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Personal Tracker"),
+        title: const Text('Personal Tracker'),
       ),
-      body: Dashboard(),
+      body: Center(
+        child: _widgetOptions.elementAt(_selectedIndex),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.business),
+            label: 'Take Survey',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.amber[800],
+        onTap: _onItemTapped,
+      ),
     );
   }
 }

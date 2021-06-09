@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:my_first_app/main.dart';
 import 'section.dart';
 import 'option.dart';
 import 'result.dart';
 import 'Dashboard.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'main.dart';
 
-class MyApp extends StatefulWidget {
+class MySurvey extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return _MyAppState();
+    return _MySurveyState();
     throw UnimplementedError();
   }
 }
 
-class _MyAppState extends State<MyApp> {
+class _MySurveyState extends State<MySurvey> {
   int qIndex = 0;
   List<String> entries = [];
   var questions = [
@@ -87,7 +87,7 @@ class _MyAppState extends State<MyApp> {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => MainPage(),
+        builder: (context) => MyApp(),
       ),
     );
   }
@@ -104,7 +104,7 @@ class _MyAppState extends State<MyApp> {
             body: qIndex < questions.length
                 ? Column(
                     children: <Widget>[
-                      Section(questions[qIndex]['t']),
+                      Section(questions[qIndex]['t'].toString()),
                       ...(questions[qIndex]["Options"] as List<String>)
                           .map((answer) {
                         return Option(() => fun(answer), answer);

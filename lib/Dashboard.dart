@@ -6,6 +6,7 @@ import 'dart:math';
 import 'dart:async';
 import 'quote.dart';
 import 'graph.dart';
+import 'main.dart';
 
 class Dashboard extends StatefulWidget {
   @override
@@ -16,20 +17,20 @@ class Dashboard extends StatefulWidget {
   }
 }
 
-List<String> vaa;
+List<String> vaa = [];
 String weekScore = "0";
 String monthScore = "0";
 double getDayScore(List<String> a) {
   return ((0.75 * int.parse(a[0])) +
-          (0.25 * int.parse(a[1])) +
+          (0.50 * int.parse(a[1])) +
           (0.25 * int.parse(a[2])) +
           (3 * int.parse(a[3])) +
           (1 * int.parse(a[4])) +
           (1.5 * int.parse(a[5])) +
           (1 * int.parse(a[6])) +
-          (1 * int.parse(a[7])) +
-          (0.25 * int.parse(a[8]))) /
-      9;
+          (1.5 * int.parse(a[7])) +
+          (0.50 * int.parse(a[8]))) /
+      10;
 }
 
 Future<String> read7day() async {
@@ -64,7 +65,7 @@ Future<String> read7day() async {
 }
 
 double roundDouble(double value, int places) {
-  double mod = pow(10.0, places);
+  double mod = pow(10.0, places).toDouble();
   return ((value * mod).round().toDouble() / mod);
 }
 
@@ -157,6 +158,7 @@ class DashboardState extends State<Dashboard> {
                       ConnectionState.waiting) {
                     return (Text("Waiting..."));
                   }
+                  throw 'TODO';
                 }),
             BarChartSample1(),
             FutureBuilder<String>(
@@ -200,6 +202,7 @@ class DashboardState extends State<Dashboard> {
                       ConnectionState.waiting) {
                     return (Text("Waiting..."));
                   }
+                  throw 'TODO';
                 }),
             ElevatedButton(
                 child:

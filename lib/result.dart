@@ -3,10 +3,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class Result extends StatelessWidget {
   int score = 0;
-  List<String> entries;
+  List<String> entries = [];
   Function dash;
-  List<String> prev;
+  List<String> prev = [];
   Result(this.entries, this.dash);
+
   Future<String> save() async {
     final prefs = await SharedPreferences.getInstance();
     String cur = "";
@@ -76,8 +77,9 @@ class Result extends StatelessWidget {
               } else if (snapshot.connectionState == ConnectionState.waiting) {
                 return (Text("Waiting..."));
               }
+              throw 'TODO';
             }),
-        RaisedButton(child: Text("Home"), onPressed: dash),
+        RaisedButton(child: Text("Home"), onPressed: dash()),
       ],
     )));
   }
