@@ -79,7 +79,7 @@ class Result extends StatelessWidget {
               }
               throw 'TODO';
             }),
-        RaisedButton(child: Text("Home"), onPressed: dash()),
+        RaisedButton(child: Text("Home"), onPressed: dash),
       ],
     )));
   }

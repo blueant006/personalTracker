@@ -83,7 +83,6 @@ class _MySurveyState extends State<MySurvey> {
 
   void dash() {
     //print("ad");
-    save();
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
@@ -96,11 +95,6 @@ class _MySurveyState extends State<MySurvey> {
   Widget build(BuildContext context) {
     return MaterialApp(
         home: Scaffold(
-            appBar: AppBar(
-              title: Text(
-                ('Personal Tracker'),
-              ),
-            ),
             body: qIndex < questions.length
                 ? Column(
                     children: <Widget>[

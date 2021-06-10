@@ -7,6 +7,7 @@ import 'dart:async';
 import 'quote.dart';
 import 'graph.dart';
 import 'main.dart';
+import 'rules.dart';
 
 class Dashboard extends StatefulWidget {
   @override
@@ -111,6 +112,15 @@ class DashboardState extends State<Dashboard> {
     );
   }
 
+  void goToRules() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => Rules(),
+      ),
+    );
+  }
+
   Widget build(BuildContext context) {
     return Container(
         alignment: Alignment.center,
@@ -204,19 +214,7 @@ class DashboardState extends State<Dashboard> {
                   }
                   throw 'TODO';
                 }),
-            ElevatedButton(
-                child:
-                    Text("Take Today's survey", style: TextStyle(fontSize: 14)),
-                style: ButtonStyle(
-                    foregroundColor:
-                        MaterialStateProperty.all<Color>(Colors.black),
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.amber),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                            borderRadius: BorderRadius.zero,
-                            side: BorderSide(color: Colors.red)))),
-                onPressed: () => back()),
+            ElevatedButton(onPressed: goToRules, child: Text("Rules")),
           ],
         )));
   }
