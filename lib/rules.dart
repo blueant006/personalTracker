@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+import 'main.dart';
 
 class Rules extends StatefulWidget {
   @override
@@ -24,6 +25,12 @@ class RulesState extends State<Rules> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Scoring rules'),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
         actions: <Widget>[
           IconButton(
             icon: const Icon(

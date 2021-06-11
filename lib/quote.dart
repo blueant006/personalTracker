@@ -28,7 +28,6 @@ class Quote extends StatelessWidget {
       ),
       margin: const EdgeInsets.all(10.0),
       width: double.infinity,
-      height: 48.0,
     );
   }
 }

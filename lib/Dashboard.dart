@@ -214,7 +214,6 @@ class DashboardState extends State<Dashboard> {
                   }
                   throw 'TODO';
                 }),
-            ElevatedButton(onPressed: goToRules, child: Text("Rules")),
           ],
         )));
   }

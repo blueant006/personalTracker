@@ -5,6 +5,7 @@ import 'option.dart';
 import 'result.dart';
 import 'Dashboard.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'rules.dart';
 
 class MySurvey extends StatefulWidget {
   @override
@@ -91,6 +92,13 @@ class _MySurveyState extends State<MySurvey> {
     );
   }
 
+  void goToRules() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => Rules()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -102,7 +110,9 @@ class _MySurveyState extends State<MySurvey> {
                       ...(questions[qIndex]["Options"] as List<String>)
                           .map((answer) {
                         return Option(() => fun(answer), answer);
-                      }).toList()
+                      }).toList(),
+                      ElevatedButton(
+                          onPressed: goToRules, child: Text("Rules")),
                     ],
                   )
                 : Result(entries, () => dash())));
