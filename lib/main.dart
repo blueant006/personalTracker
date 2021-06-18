@@ -9,9 +9,7 @@ void main() => runApp(MyApp());
 
 /// This is the main application widget.
 class MyApp extends StatelessWidget {
-  MyApp({
-    Key key,
-  }) : super(key: key);
+  MyApp({Key? key}) : super(key: key);
 
   static const String _title = 'Personal Tracker';
 
@@ -25,9 +23,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyStatefulWidget extends StatefulWidget {
-  const MyStatefulWidget({
-    Key key,
-  }) : super(key: key);
+  const MyStatefulWidget({Key? key}) : super(key: key);
 
   @override
   State<MyStatefulWidget> createState() => _MyStatefulWidgetState();
