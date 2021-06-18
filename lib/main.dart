@@ -3,6 +3,7 @@ import 'package:my_first_app/Dashboard.dart';
 import 'package:my_first_app/survey.dart';
 import 'Dashboard.dart';
 import 'analytics.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 void main() => runApp(MyApp());
 

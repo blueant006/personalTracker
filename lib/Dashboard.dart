@@ -7,7 +7,6 @@ import 'dart:async';
 import 'quote.dart';
 import 'graph.dart';
 import 'main.dart';
-import 'rules.dart';
 
 class Dashboard extends StatefulWidget {
   @override
@@ -108,15 +107,6 @@ class DashboardState extends State<Dashboard> {
       context,
       MaterialPageRoute(
         builder: (context) => MyApp(),
-      ),
-    );
-  }
-
-  void goToRules() {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => Rules(),
       ),
     );
   }
