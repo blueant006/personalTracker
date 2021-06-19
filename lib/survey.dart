@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_first_app/homeScreen.dart';
 import 'package:my_first_app/main.dart';
 import 'section.dart';
 import 'option.dart';
@@ -86,7 +87,7 @@ class _MySurveyState extends State<MySurvey> {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => MyApp(),
+        builder: (context) => HomeScreen(),
       ),
     );
   }
