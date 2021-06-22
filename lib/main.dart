@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:my_first_app/survey.dart';
-import 'Dashboard.dart';
-import 'analytics.dart';
 import 'utils/login_page.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() => runApp(MyApp());
+final firestoreInstance = FirebaseFirestore.instance;
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(MyApp());
+  //updating databse(not real time)
+  //all update dunctions updateDatabse.dart file- use for one time staic data type for all users
+  //updateQuotes();
+}
 
 /// This is the main application widget.
 class MyApp extends StatelessWidget {
