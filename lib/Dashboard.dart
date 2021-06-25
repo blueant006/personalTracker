@@ -7,6 +7,7 @@ import 'dart:async';
 import 'quote.dart';
 import 'graph.dart';
 import 'main.dart';
+import 'quoteOffline.dart';
 
 class Dashboard extends StatefulWidget {
   @override
@@ -117,7 +118,8 @@ class DashboardState extends State<Dashboard> {
         child: SingleChildScrollView(
             child: Column(
           children: <Widget>[
-            Quote(),
+            //Quote is from Online database, QuoteOffline is well Offline list of quotes
+            QuoteOffline(),
             FutureBuilder<String>(
                 future: read7day(),
                 builder:

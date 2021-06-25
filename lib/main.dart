@@ -10,7 +10,7 @@ void main() async {
   await Firebase.initializeApp();
   runApp(MyApp());
   //updating databse(not real time)
-  //all update dunctions updateDatabse.dart file- use for one time staic data type for all users
+  //all update functions updateDatabse.dart file- use for one time staic data type for all users
   //updateQuotes();
 }
 
