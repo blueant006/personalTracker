@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'survey.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'dart:math';
 import 'dart:async';
-import 'quote.dart';
 import 'graph.dart';
 import 'main.dart';
 import 'quoteOffline.dart';
