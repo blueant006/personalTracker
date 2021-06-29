@@ -10,5 +10,7 @@ An application to track habits.
 - Graph for displaying your scores in previous week
 ![Alt text](/assets/screenshots/5.png?raw=true " " )
 ![Alt text](/assets/screenshots/2.png?raw=true " " )
-![Alt text](/assets/screenshots/3.png?raw=true " " )
+![Alt text](/assets/screenshots/5.png?raw=true " " )
+![Alt text](/assets/screenshots/6.png?raw=true " " )
+![Alt text](/assets/screenshots/7.png?raw=true " " )
 
