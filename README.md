@@ -9,5 +9,6 @@ An application to track habits.
 - Weekly and Monthly average score
 - Graph for displaying your scores in previous week
 
-Screenshot_1624598782.png
-Screenshot_1624598798.png
+![Alt text](/assets/screenshots/2.png?raw=true " ")
+![Alt text](/assets/screenshots/4.png?raw=true " ")
+
